@@ -11,6 +11,7 @@ const W = canvas.width, H = canvas.height;
 let state = 'idle';
 let score = 0, hiScore = 0;
 let isacMode = false;
+let eduardoMode = false;
 
 let mansImg = new Image();
 mansImg.src = 'mans2.jpg';
@@ -20,6 +21,12 @@ isacImg1.src = 'isac1.jpg';
 const isacImg2 = new Image();
 isacImg2.src = 'isac2.jpg';
 let currentBg = isacImg1;
+
+const eduardoImgs = [
+  'Eduardo1.jpg', 'Eduardo2.jpg', 'Eduardo3.jpg',
+  'Eduardo4.jpg', 'Eduardo5.jpg', 'Eduardo6.jpg'
+].map(src => { const i = new Image(); i.src = src; return i; });
+let eduardoBg = eduardoImgs[0];
 
 let animFrame = null;
 
@@ -143,6 +150,8 @@ function showDeathScreen() {
 function drawSky() {
   if (isacMode && currentBg.complete && currentBg.naturalWidth > 0) {
     ctx.drawImage(currentBg, 0, 0, W, H - GROUND_H);
+  } else if (eduardoMode && eduardoBg.complete && eduardoBg.naturalWidth > 0) {
+    ctx.drawImage(eduardoBg, 0, 0, W, H - GROUND_H);
   } else {
     const grad = ctx.createLinearGradient(0, 0, 0, H - GROUND_H);
     grad.addColorStop(0, '#5ec0d8');
@@ -177,31 +186,6 @@ function drawGround() {
   for (let x = (groundX % 40) - 40; x < W + 40; x += 40) {
     ctx.fillRect(x, H - GROUND_H, 20, 8);
   }
-}
-
-function drawPipeNormal(x, topH) {
-  const gapTop = topH;
-  const gapBot = topH + PIPE_GAP;
-
-  const pipeGrad = ctx.createLinearGradient(x, 0, x + PIPE_W, 0);
-  pipeGrad.addColorStop(0, '#3a9b3a');
-  pipeGrad.addColorStop(0.4, '#5ecb5e');
-  pipeGrad.addColorStop(1, '#2a7a2a');
-  ctx.fillStyle = pipeGrad;
-  ctx.fillRect(x, 0, PIPE_W, gapTop - 14);
-
-  ctx.fillStyle = '#2a7a2a';
-  ctx.fillRect(x - 5, gapTop - 28, PIPE_W + 10, 28);
-  ctx.fillStyle = '#5ecb5e';
-  ctx.fillRect(x - 3, gapTop - 26, PIPE_W + 2, 6);
-
-  ctx.fillStyle = pipeGrad;
-  ctx.fillRect(x, gapBot + 14, PIPE_W, H - GROUND_H - gapBot - 14);
-
-  ctx.fillStyle = '#2a7a2a';
-  ctx.fillRect(x - 5, gapBot, PIPE_W + 10, 28);
-  ctx.fillStyle = '#5ecb5e';
-  ctx.fillRect(x - 3, gapBot + 20, PIPE_W + 2, 6);
 }
 
 function drawPipe(x, topH) {
@@ -296,11 +280,12 @@ function loop() {
       if (!p.scored && p.x + PIPE_W < bird.x) {
         p.scored = true;
         score++;
-    scoreDisplay.textContent = score;
-    if (score > hiScore) { hiScore = score; hiScoreDisplay.textContent = 'HI: ' + hiScore; }
+        scoreDisplay.textContent = score;
+        if (score > hiScore) { hiScore = score; hiScoreDisplay.textContent = 'HI: ' + hiScore; }
         spawnScoreParticles(bird.x + 60, bird.y);
         currentBg = currentBg === isacImg1 ? isacImg2 : isacImg1;
-    }
+        eduardoBg = eduardoImgs[Math.floor(Math.random() * eduardoImgs.length)];
+      }
     });
     pipes = pipes.filter(p => p.x > -PIPE_W - 20);
 
@@ -326,6 +311,12 @@ const isacToggle = document.getElementById('isacToggle');
 isacToggle.addEventListener('click', () => {
   isacMode = !isacMode;
   isacToggle.classList.toggle('active', isacMode);
+});
+
+const eduardoToggle = document.getElementById('eduardoToggle');
+eduardoToggle.addEventListener('click', () => {
+  eduardoMode = !eduardoMode;
+  eduardoToggle.classList.toggle('active', eduardoMode);
 });
 
 document.getElementById('startBtn').addEventListener('click', startGame);
