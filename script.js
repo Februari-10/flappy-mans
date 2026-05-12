@@ -23,8 +23,8 @@ isacImg2.src = 'isac2.jpg';
 let currentBg = isacImg1;
 
 const eduardoImgs = [
-  'Eduardo1.jpg', 'Eduardo2.jpg', 'Eduardo3.jpg',
-  'Eduardo4.jpg', 'Eduardo5.jpg', 'Eduardo6.jpg'
+  'eduardo1.jpg', 'eduardo2.jpg', 'eduardo3.jpg',
+  'eduardo4.jpg', 'eduardo5.jpg', 'eduardo6.jpg'
 ].map(src => { const i = new Image(); i.src = src; return i; });
 let eduardoBg = eduardoImgs[0];
 
