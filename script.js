@@ -150,7 +150,7 @@ function showDeathScreen() {
 function drawSky() {
   if (isacMode && currentBg.complete && currentBg.naturalWidth > 0) {
     ctx.drawImage(currentBg, 0, 0, W, H - GROUND_H);
-  } else if (eduardoMode && eduardoBg.complete && eduardoBg.naturalWidth > 0) {
+  } else if (eduardoMode) {
     ctx.drawImage(eduardoBg, 0, 0, W, H - GROUND_H);
   } else {
     const grad = ctx.createLinearGradient(0, 0, 0, H - GROUND_H);
